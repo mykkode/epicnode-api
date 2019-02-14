@@ -37,11 +37,11 @@ return [
 
     'guards' => [
         'user-api' => [
-            'driver' => 'ejt',
+            'driver' => 'ujt',
             'provider' => 'users',
         ],
-        'subsystem-api' => [
-            'driver' => 'ejt',
+        'client-api' => [
+            'driver' => 'cjt',
             'provider' => 'clients',
         ],
     ],
