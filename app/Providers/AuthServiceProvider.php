@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Providers;
+use App\Extensions\ATG as ATG;
 use Illuminate\Auth\TokenGuard;
+use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -31,13 +33,12 @@ class AuthServiceProvider extends ServiceProvider
             // The token guard implements a basic API token based guard implementation
             // that takes an API token field from the request and matches it to the
             // user in the database or another persistence layer where users are.
-            $guard = new TokenGuard(
+            $guard = new ATG(
                 Auth::createUserProvider($config['provider'] ?? null),
                 $app['request'],
-                'user_token',
                 'user_token'
             );
-
+            
             $app->refresh('request', $guard, 'setRequest');
 
             return $guard;
@@ -47,18 +48,16 @@ class AuthServiceProvider extends ServiceProvider
             // The token guard implements a basic API token based guard implementation
             // that takes an API token field from the request and matches it to the
             // client in the database or another persistence layer where clients are.
-            $guard = new TokenGuard(
+            $guard = new ATG(
                 Auth::createUserProvider($config['provider'] ?? null),
                 $app['request'],
                 'client_token',
-                'client_token'
+                'token'
             );
 
             $app->refresh('request', $guard, 'setRequest');
 
             return $guard;
         });
-
-       
     }
 }

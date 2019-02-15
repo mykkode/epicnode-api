@@ -23,6 +23,6 @@ class Client extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'client_token',
+        'token',
     ];
 }
