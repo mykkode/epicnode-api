@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -49,8 +48,11 @@ class LoginController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     protected function validateLogin(Request $request)
-    {
-        $request->validate([$this->username() => 'required|string', 'password' => 'required|string',]);
+    {   
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string'
+        ]);
     }
 
     /**
@@ -68,28 +70,31 @@ class LoginController extends Controller
      * Send the response after the user was authenticated.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     protected function sendLoginResponse(Request $request)
     {
         return response()->json([
-            'token' => $this->guard()->user()->token
-        ]);
+            "data" => [
+                'token' => $this->guard()->user()->token
+            ]]);
     }
 
     /**
      * Get the failed login response instance.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Illuminate\Validation\ValidationException
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        throw ValidationException::withMessages([
-            $this->username() => [trans('auth.failed')],
-        ]);
+        return response()->json([
+            "error" => [
+                "code" => "401",
+                "message"=>"Wrong Credentials",
+        ]],401);
     }
 
     /**
@@ -111,22 +116,8 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $this->guard()->logout();
-
-        $request->session()->invalidate();
-
-        return $this->loggedOut($request) ?: redirect('/');
     }
 
-    /**
-     * The user has logged out of the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
-     */
-    protected function loggedOut(Request $request)
-    {
-        //
-    }
 
     /**
      * Get the guard to be used during authentication.
@@ -137,9 +128,5 @@ class LoginController extends Controller
     {
         return Auth::guard();
     }
-
-
-
-
 
 }
