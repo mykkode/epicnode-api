@@ -50,7 +50,7 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {   
         $request->validate([
-            $this->username() => 'required|string',
+            $this->usernameField() => 'required|string',
             'password' => 'required|string'
         ]);
     }
@@ -63,7 +63,10 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-        return $request->only($this->username(), 'password');
+        return [
+            $this->username($request) => $request->input($this->usernameField()),
+            'password' => $request->input('password')
+        ];
     }
 
     /**
@@ -98,13 +101,28 @@ class LoginController extends Controller
     }
 
     /**
+     * Get the field name of the identification field (email or username)
+     *
+     * @return string
+     */
+    public function usernameField()
+    {
+        return 'username';
+    }
+
+    /**
      * Get the login username to be used by the controller.
      *
      * @return string
      */
-    public function username()
+    public function username(Request $request)
     {
-        return 'email';
+        if(filter_var($request->input($this->usernameField()), FILTER_VALIDATE_EMAIL)) {
+            return 'email';
+        }
+        else {
+            return 'username';
+        }
     }
 
     /**
