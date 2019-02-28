@@ -60,7 +60,7 @@ class ATG implements Guard {
 
         // Check if the retrieved user exists and if it does check if its password matches the provided one.
         if ((!is_null($this->user)) && $this->provider->validateCredentials($this->user, $credentials)) {
-            // If the credentials are valid, ask the provider to store a new toke in the database
+            // If the credentials are valid, ask the provider to store a new token in the database
             $this->provider->updateRememberToken($this->user, str_random(64));
             // Return our user
 	        return $this->user;

@@ -11,6 +11,21 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     * The column name of the "remember me" token.
+     *
+     * @var string
+     */
+    protected $rememberTokenName = 'token';
+    /**
+     * Get the column name for the "remember me" token.
+     *
+     * @return string
+     */
+    public function getRememberTokenName()
+    {
+        return $this->rememberTokenName;
+    }
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
