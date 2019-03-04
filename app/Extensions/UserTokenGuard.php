@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 
-class ATG implements Guard {
+class UserTokenGuard implements Guard {
 	use GuardHelpers;
 	private $inputKey='';
 	private $storageKey='';

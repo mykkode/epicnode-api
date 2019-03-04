@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-use App\Extensions\ATG as ATG;
+use App\Extensions\UserTokenGuard as UserTokenGuard;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
@@ -29,11 +29,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
 
-        Auth::extend('ujt', function ($app, $name, array $config) {
+        Auth::extend('UserTokenGuard', function ($app, $name, array $config) {
             // The token guard implements a basic API token based guard implementation
             // that takes an API token field from the request and matches it to the
             // user in the database or another persistence layer where users are.
-            $guard = new ATG(
+            $guard = new UserTokenGuard(
                 Auth::createUserProvider($config['provider'] ?? null),
                 $app['request'],
                 'user_token'
@@ -44,11 +44,11 @@ class AuthServiceProvider extends ServiceProvider
             return $guard;
         });
 
-        Auth::extend('cjt', function ($app, $name, array $config) {
+        Auth::extend('ClientTokenGuard', function ($app, $name, array $config) {
             // The token guard implements a basic API token based guard implementation
             // that takes an API token field from the request and matches it to the
             // client in the database or another persistence layer where clients are.
-            $guard = new ATG(
+            $guard = new UserTokenGuard(
                 Auth::createUserProvider($config['provider'] ?? null),
                 $app['request'],
                 'client_token',

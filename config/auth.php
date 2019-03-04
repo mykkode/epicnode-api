@@ -37,11 +37,11 @@ return [
 
     'guards' => [
         'user-api' => [
-            'driver' => 'ujt',
+            'driver' => 'UserTokenGuard',
             'provider' => 'users',
         ],
         'client-api' => [
-            'driver' => 'cjt',
+            'driver' => 'ClientTokenGuard',
             'provider' => 'clients',
         ],
     ],
@@ -72,11 +72,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Client::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
