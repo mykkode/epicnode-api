@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Exceptions\badAuthenticationException as badAuthenticationException;
 
 class LoginController extends Controller
 {
@@ -78,8 +79,10 @@ class LoginController extends Controller
     protected function sendLoginResponse(Request $request)
     {
         return response()->json([
+            "success" => true,
             "data" => [
-                'token' => $this->guard()->user()->token
+                "code" => 200,
+                "token" => $this->guard()->user()->token
             ]]);
     }
 
@@ -87,17 +90,15 @@ class LoginController extends Controller
      * Get the failed login response instance.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Exceptions\badAuthenticationException
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        return response()->json([
-            "error" => [
-                "code" => "401",
-                "message"=>"Wrong Credentials",
-        ]],401);
+        throw new badAuthenticationException(
+            'Bad authentication data.'
+        );
     }
 
     /**

@@ -68,6 +68,25 @@ class ATG implements Guard {
         // There is no user that matches these credentials
         return null;
     }
+
+    /**
+     * Determine if the current user's token is valid (authenticate him).
+     *
+     * @return bool
+     */
+    public function check() {
+        $token = ["token" => $this->getTokenFromRequest()];
+        $this->user = $this->provider->retrieveByCredentials($token);
+        // Check if the retrieved user exists and if it does check if its password matches the provided one.
+        if ((!is_null($this->user))) {
+            // The token is valid
+            return true;
+        }
+        // There is no user that matches these credentials
+        return false;
+    }
+
+
      /**
      * Validate a user's credentials (EXCLUDING the password)
      *
