@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 use App\Extensions\UserTokenGuard as UserTokenGuard;
+use App\Extensions\ClientTokenGuard as ClientTokenGuard;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Support\Facades\Auth;
@@ -39,22 +40,6 @@ class AuthServiceProvider extends ServiceProvider
                 'user_token'
             );
             
-            $app->refresh('request', $guard, 'setRequest');
-
-            return $guard;
-        });
-
-        Auth::extend('ClientTokenGuard', function ($app, $name, array $config) {
-            // The token guard implements a basic API token based guard implementation
-            // that takes an API token field from the request and matches it to the
-            // client in the database or another persistence layer where clients are.
-            $guard = new UserTokenGuard(
-                Auth::createUserProvider($config['provider'] ?? null),
-                $app['request'],
-                'client_token',
-                'token'
-            );
-
             $app->refresh('request', $guard, 'setRequest');
 
             return $guard;

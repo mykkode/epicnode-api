@@ -40,10 +40,6 @@ return [
             'driver' => 'UserTokenGuard',
             'provider' => 'users',
         ],
-        'client-api' => [
-            'driver' => 'ClientTokenGuard',
-            'provider' => 'clients',
-        ],
     ],
 
     /*
@@ -67,10 +63,6 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
-        ],
-        'clients' => [
-            'driver' => 'eloquent',
-            'model' => App\Client::class,
         ],
     ],
 
