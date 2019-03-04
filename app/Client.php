@@ -4,10 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Authenticatable
+class Client extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
