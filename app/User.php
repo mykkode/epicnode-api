@@ -31,7 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'email',
+        'name', 'username', 'email', 'password'
     ];
 
     /**
@@ -54,4 +54,5 @@ class User extends Authenticatable
     protected $attributes = [
         'token' => NULL,
     ];
+
 }

@@ -17,7 +17,9 @@ class CreateTestsTable extends Migration
             $table->increments('id');
             $table->integer('exercise_id')->unsigned();
             $table->foreign('exercise_id')->references('id')->on('exercises');
+            $table->integer('passed');
             $table->timestamps();
+
         });
     }
 
