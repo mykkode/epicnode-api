@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Exceptions\InvalidClient;
+use App\Exceptions\Http403;
 use App\Client as Client;
 
 class AuthenticateClient
@@ -13,6 +13,9 @@ class AuthenticateClient
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     *
+     * @throws \App\Exceptions\Http403
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -27,7 +30,7 @@ class AuthenticateClient
      * @param  \Illuminate\Http\Request  $request
      * @return void
      *
-     * @throws \Illuminate\Auth\InvalidClient
+     * @throws \App\Exceptions\Http403
      */
     protected function authenticate($request) {
 
@@ -42,8 +45,8 @@ class AuthenticateClient
             }
         }
 
-        throw new InvalidClient(
-            'Invalid client. Please refresh or delete your cookies and/or cache!'
+        throw new Http403(
+            'Invalid client. Please refresh or delete your cookies and / or cache!'
         );
     }
 

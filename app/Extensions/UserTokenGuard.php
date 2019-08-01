@@ -76,6 +76,9 @@ class UserTokenGuard implements Guard {
      */
     public function check() {
         $token = ["token" => $this->getTokenFromRequest()];
+        if(is_null($token['token'])) {
+            return false;
+        }
         $this->user = $this->provider->retrieveByCredentials($token);
         // Check if the retrieved user exists and if it does check if its password matches the provided one.
         if ((!is_null($this->user))) {
@@ -115,7 +118,8 @@ class UserTokenGuard implements Guard {
      */
     private function getTokenFromRequest() {
        	$token = $this->request->input($this->inputKey);
-       	return $token;
+
+        return $token;
     }
 
     /**

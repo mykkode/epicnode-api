@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class InvalidClient extends Exception
+class Http401 extends Exception
 {
      /**
      * Render the exception into an HTTP response.
@@ -14,10 +14,11 @@ class InvalidClient extends Exception
      */
     public function render($request)
     {
+
         return response()->json([
         	"success" => false,
         	"error" => [
-        		"code" => 403,
+        		"code" => 401,
         		"message" => $this->getMessage()
         	]]);
     }

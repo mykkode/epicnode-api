@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\Http401;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\badAuthenticationException as badAuthenticationException;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -27,17 +29,17 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \App\Exceptions\Http401
      */
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+       $this -> validateLogin($request);
 
         if ($this->guard()->attempt($this->credentials($request))) {
             return $this->sendLoginResponse($request);
         }
 
-        return $this->sendFailedLoginResponse($request);
+        $this->sendFailedLoginResponse($request);
     }
 
     /**
@@ -46,14 +48,18 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \App\Exceptions\Http401
      */
     protected function validateLogin(Request $request)
-    {   
-        $request->validate([
-            $this->usernameField() => 'required|string',
-            'password' => 'required|string'
-        ]);
+    {
+         $validator = Validator::make($request->all(), [
+              $this->usernameField() => 'required|string',
+             'password' => 'required|string',
+         ]);
+
+         if($validator -> fails()) {
+             throw new Http401('Invalid authentication fields.');
+         }
     }
 
     /**
@@ -65,7 +71,7 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         return [
-            $this->username($request) => $request->input($this->usernameField()),
+            $this -> username($request) => $request->input($this->usernameField()),
             'password' => $request->input('password')
         ];
     }
@@ -92,11 +98,11 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return void
      *
-     * @throws \Exceptions\badAuthenticationException
+     * @throws \App\Exceptions\Http401
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        throw new badAuthenticationException(
+        throw new Http401(
             'Bad authentication data.'
         );
     }

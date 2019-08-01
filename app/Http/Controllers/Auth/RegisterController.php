@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request ;
 use Illuminate\Auth\Events\Registered;
+use \App\Exceptions\Http401;
 
 class RegisterController extends Controller
 {
@@ -46,16 +47,24 @@ class RegisterController extends Controller
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
+     *
+     * @throws \App\Exceptions\Http401
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+
+    protected function validator(Request $request)
     {
-        return Validator::make($data, [
+        $validator = Validator::make($request->all(), [
             'username' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
+
+        if($validator -> fails()) {
+            throw new Http401("Invalid register fields");
+        }
     }
 
     /**
@@ -79,11 +88,14 @@ class RegisterController extends Controller
      * Handle a registration request for the application.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
+     * @throws \App\Exceptions\Http401
+     *
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
+        $this->validator($request);
 
         event(new Registered($user = $this->create($request->all())));
 

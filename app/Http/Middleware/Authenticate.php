@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Auth\AuthenticationException;
-use App\Exceptions\badAuthenticationException as badAuthenticationException;
+use App\Exceptions\Http401 as badAuthenticationException;
 
 class Authenticate extends Middleware
 {
@@ -29,7 +29,7 @@ class Authenticate extends Middleware
             }
         }
 
-        throw new badAuthenticationException(
+        throw new Http401(
             'Invalid token'
         );
     }

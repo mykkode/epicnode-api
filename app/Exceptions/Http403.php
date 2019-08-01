@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class badAuthenticationException extends Exception
+class Http403 extends Exception
 {
      /**
      * Render the exception into an HTTP response.
@@ -17,7 +17,7 @@ class badAuthenticationException extends Exception
         return response()->json([
         	"success" => false,
         	"error" => [
-        		"code" => 401,
+        		"code" => 403,
         		"message" => $this->getMessage()
         	]]);
     }
