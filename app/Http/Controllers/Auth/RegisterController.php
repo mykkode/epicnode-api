@@ -11,6 +11,7 @@ use Illuminate\Http\Request ;
 use Illuminate\Auth\Events\Registered;
 use \App\Exceptions\Http401;
 
+
 class RegisterController extends Controller
 {
     /*
@@ -46,11 +47,10 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
-     *
+     * @param \Illuminate\Http\Request
      * @throws \App\Exceptions\Http401
      *
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return void
      */
 
     protected function validator(Request $request)
@@ -99,9 +99,13 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
 
-//        $this->guard()->login($user);
+        $this->guard()->login($user);
 
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
+        return response()->json([
+            "success" => true,
+            "data" => [
+                "code" => 200,
+                "token" => $user->token
+            ]]);
     }
 }

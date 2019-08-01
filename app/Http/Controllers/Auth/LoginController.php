@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\Http401;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller

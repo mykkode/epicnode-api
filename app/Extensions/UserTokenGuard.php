@@ -7,6 +7,7 @@ use Illuminate\Auth\GuardHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
+use \Illuminate\Contracts\Auth\Authenticatable;
 
 class UserTokenGuard implements Guard {
 	use GuardHelpers;
@@ -22,6 +23,16 @@ class UserTokenGuard implements Guard {
 		$this->inputKey = $inputKey;
 		$this->storageKey = $storageKey;
 	}
+
+    /**
+     * Authenticate a user by its model instance
+     * This function should only be called from register controller
+     *
+     *
+     */
+    public function login(Authenticatable $user) {
+        $this->provider->updateRememberToken($user, str_random(64));
+    }
 
     /**
      * Get the currently authenticated user or authenticate him.
