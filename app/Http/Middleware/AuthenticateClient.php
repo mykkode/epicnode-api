@@ -46,7 +46,7 @@ class AuthenticateClient
         }
 
         throw new Http403(
-            'Invalid client. Please refresh or delete your cookies and / or cache!'
+            ["client" => "The client you are using is no longer in use!"], 'Invalid client. Please refresh or delete your cookies and / or cache!'
         );
     }
 

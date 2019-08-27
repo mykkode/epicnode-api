@@ -29,8 +29,6 @@ class Authenticate extends Middleware
             }
         }
 
-        throw new Http401(
-            'Invalid token'
-        );
+        throw new Http401(["token" => "Invalid"], 'Invalid token');
     }
 }

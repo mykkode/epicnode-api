@@ -17,7 +17,7 @@ class CreateClientsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('version');
-            $table->boolean('active');
+            $table->boolean('active')->index();
             $table->string('token', 100)->nullable();
             $table->timestamps();
         });

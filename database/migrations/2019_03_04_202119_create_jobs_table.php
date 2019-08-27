@@ -15,11 +15,11 @@ class CreateJobsTable extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('exercise_id')->unsigned();
+            $table->integer('exercise_id')->unsigned()->index();
             $table->foreign('exercise_id')->references('id')->on('exercises');
-            $table->integer('status')->default(0)->unsigned();
+            $table->integer('status')->default(0)->unsigned()->index();
             $table->timestamps();
         });
     }

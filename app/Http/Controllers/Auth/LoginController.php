@@ -56,7 +56,7 @@ class LoginController extends Controller
          ]);
 
          if($validator -> fails()) {
-             throw new Http401('Invalid authentication fields.');
+             throw new Http401($validator->errors(),'Invalid authentication fields.');
          }
     }
 
@@ -100,9 +100,7 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        throw new Http401(
-            'Bad authentication data.'
-        );
+        throw new Http401(NULL, 'Bad authentication data.');
     }
 
     /**

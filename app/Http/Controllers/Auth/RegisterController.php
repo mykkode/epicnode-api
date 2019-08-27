@@ -63,7 +63,7 @@ class RegisterController extends Controller
         ]);
 
         if($validator -> fails()) {
-            throw new Http401("Invalid register fields");
+            throw new Http401($validator->errors(), "Invalid register fields");
         }
     }
 

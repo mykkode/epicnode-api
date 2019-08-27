@@ -15,7 +15,7 @@ class CreateExercisesTable extends Migration
     {
         Schema::create('exercises', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('complexity')->unsigned();
+            $table->integer('complexity')->unsigned()->index();
             $table->timestamps();
         });
     }

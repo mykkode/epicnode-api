@@ -6,7 +6,9 @@ use Exception;
 
 class Http401 extends Exception
 {
-     /**
+    protected $bindings;
+
+    /**
      * Render the exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request
@@ -14,12 +16,23 @@ class Http401 extends Exception
      */
     public function render($request)
     {
-
         return response()->json([
         	"success" => false,
         	"error" => [
         		"code" => 401,
-        		"message" => $this->getMessage()
+        		"message" => $this->getMessage(),
+                "bindings" => $this->getBindings(),
         	]]);
+    }
+
+    public function getBindings() {
+        return $this->bindings;
+    }
+
+    public function __construct($bindings, $message, $code=401, Exception $previous = NULL)
+    {
+        parent::__construct($message, $code, $previous);
+
+        $this->bindings = $bindings;
     }
 }

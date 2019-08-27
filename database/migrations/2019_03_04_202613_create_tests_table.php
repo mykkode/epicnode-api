@@ -15,9 +15,10 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('exercise_id')->unsigned();
+            $table->integer('exercise_id')->unsigned()->index();
             $table->foreign('exercise_id')->references('id')->on('exercises');
-            $table->integer('passed');
+            $table->integer('points');
+            $table->boolean('active')->index();
             $table->timestamps();
 
         });
